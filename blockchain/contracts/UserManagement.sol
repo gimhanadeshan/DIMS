@@ -16,7 +16,7 @@ contract UserManagement {
     event UserRegistered(address user, Role role);
 
     constructor() {
-        owner = msg.sender;  // Contract එක deploy කරන අය admin වෙනවා
+        owner = msg.sender;  
         users[owner] = User(owner, Role.Admin, true);
     }
 
