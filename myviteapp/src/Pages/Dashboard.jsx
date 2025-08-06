@@ -1,10 +1,14 @@
 import React from 'react'
+import Layout from '../components/Layout';
 
 const Dashboard = () => {
 
     const role = localStorage.getItem("role");
 
   return (
+
+    <Layout>
+
     <div>
 
      <h2>This is Dashboard</h2>
@@ -14,6 +18,9 @@ const Dashboard = () => {
      {role === "guest" && <p>Wellcome guest!</p>} 
       
     </div>
+
+    </Layout>
+    
   )
 }
 
