@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 24 * 60 * 60 * 1000, 
     });
-   res.status(200).json({ success: true, msg: "Login successful", token });
+   res.status(200).json({ success: true, msg: "Login successful", token , user });
 
   } catch (error) {
     res.status(500).json({ success: false, msg: "Internal server error" });
