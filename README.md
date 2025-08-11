@@ -1,0 +1,5 @@
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- Web3 Wallet Integration
