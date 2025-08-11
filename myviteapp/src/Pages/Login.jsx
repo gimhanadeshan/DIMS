@@ -25,10 +25,7 @@ const Login = () => {
     try {
       const res = await loginUser(user)
       alert('✅ Logged in!', res.data)
-
-      localStorage.setItem('token', res.data.token)
-      localStorage.setItem('role', res.data.role)
-      window.location.href = '/dashboard'
+       navigate('/dashboard')
     } catch (err) {
       alert('❌ Error!', err.response?.data || err.message)
     }
@@ -62,7 +59,6 @@ const Login = () => {
                   value={user.email}
                   onChange={handlechange}
                   required
-                  autoComplete="email"
                   className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>
@@ -77,7 +73,6 @@ const Login = () => {
                   value={user.password}
                   onChange={handlechange}
                   required
-                  autoComplete="current-password"
                   className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>

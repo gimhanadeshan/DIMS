@@ -22,7 +22,7 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Set this dynamically in production
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
-  const userName = localStorage.getItem('name') || 'User'; // fallback to 'User' if name not found
+  const name = localStorage.getItem('name') || 'User'; // fallback to 'User' if name not found
 
   useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
 
@@ -78,14 +78,14 @@ const Header = () => {
                     <>
                       <Link
                         to="/dashboard"
-                        className="block px-4 py-2 text-gray-900 hover:bg-blue-300"
+                        className="block px-4 py-2 text-gray-900 hover:bg-blue-200"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Dashboard
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 text-gray-900 hover:bg-blue-300"
+                        className="w-full text-left px-4 py-2 text-gray-900 hover:bg-blue-200"
                       >
                         Logout
                       </button>
@@ -94,14 +94,14 @@ const Header = () => {
                     <>
                       <Link
                         to="/login"
-                        className="block px-4 py-2 text-gray-900 hover:bg-blue-300"
+                        className="block px-4 py-2 text-gray-900 hover:bg-blue-200"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Sign In
                       </Link>
                       <Link
                         to="/register"
-                        className="block px-4 py-2 text-gray-900 hover:bg-blue-300"
+                        className="block px-4 py-2 text-gray-900 hover:bg-blue-200"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Register
