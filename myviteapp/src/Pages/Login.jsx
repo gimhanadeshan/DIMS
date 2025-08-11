@@ -1,91 +1,61 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { loginUser } from '../services/api'
 import Layout from '../components/Layout'
 import Mobitel from '../assets/mobitel.svg'
+import BubblesBackground from '../components/BubblesBackground'
+import { useNavigate } from 'react-router-dom'
+
 const Login = () => {
+  const [user, setuser] = useState({
+    email: '',
+    password: '',
+  })
 
-   const [user,setuser] = useState({
-    email:"",
-    password:""
-   })
+  const navigate = useNavigate();
 
-   const handlechange = (e) => {
+  const handlechange = (e) => {
     setuser({
-        ...user,
-        [e.target.name]: e.target.value})
-   }
+      ...user,
+      [e.target.name]: e.target.value,
+    })
+  }
 
-   const handlesubmit = async (e) => {
-    e.preventDefault();
+  const handlesubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await loginUser(user)
+      alert('✅ Logged in!', res.data)
 
-    try{
-        const res = await loginUser(user);
-        alert("✅ Logged in!", res.data)
-
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("role", res.data.role);
-        window.location.href = "/dashboard";
-    }catch(err){
-        alert("❌ Error!", err.response.data);
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('role', res.data.role)
+      window.location.href = '/dashboard'
+    } catch (err) {
+      alert('❌ Error!', err.response?.data || err.message)
     }
+  }
 
-   }
+  const handleAi = () => {
+    navigate('/metamasklogin') 
+  }
 
   return (
+    <Layout>
+      <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
+        <BubblesBackground count={15} />
 
-<Layout>
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl rounded-2xl p-8">
+            <img alt="Your Company" src={Mobitel} className="mx-auto h-10 w-auto" />
 
+            <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-white">
+              Sign in to your account
+            </h2>
 
-    <div className="relative isolate overflow-hidden bg-blue-50 px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            
-          <img
-            alt="Your Company"
-            src={Mobitel}
-            className="mx-auto h-10 w-auto"
-          />
-
-          
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-        <svg
-          aria-hidden="true"
-          className="absolute top-0 left-[max(50%,25rem)] h-256 w-512 -translate-x-1/2 mask-[radial-gradient(64rem_64rem_at_top,white,transparent)] stroke-gray-200"
-        >
-          <defs>
-            <pattern
-              x="50%"
-              y={-1}
-              id="e813992c-7d03-4cc4-a2bd-151760b470a0"
-              width={200}
-              height={200}
-              patternUnits="userSpaceOnUse"
-            >
-              <path d="M100 200V.5M.5 .5H200" fill="none" />
-            </pattern>
-          </defs>
-          <svg x="50%" y={-1} className="overflow-visible fill-gray-200">
-            <path
-              d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
-              strokeWidth={0}
-            />
-          </svg>
-          <rect fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)" width="100%" height="100%" strokeWidth={0} />
-        </svg>
-      </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            
-          <form onSubmit={handlesubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-                Email address
-              </label>
-              <div className="mt-2">
+            <form onSubmit={handlesubmit} className="mt-8 space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-white">
+                  Email address
+                </label>
                 <input
                   name="email"
                   type="email"
@@ -93,18 +63,14 @@ const Login = () => {
                   onChange={handlechange}
                   required
                   autoComplete="email"
-                  className="block w-full rounded-md bg-blue-50 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-300 sm:text-sm/6"
+                  className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>
-            </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-white">
                   Password
                 </label>
-              </div>
-              <div className="mt-2">
                 <input
                   name="password"
                   type="password"
@@ -112,32 +78,69 @@ const Login = () => {
                   onChange={handlechange}
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md bg-blue-50 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-300 sm:text-sm/6"
+                  className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>
-            </div>
 
-            <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"
+                className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold text-white shadow hover:bg-blue-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"
               >
                 Sign in
               </button>
-            </div>
-          </form>
+            </form>
 
-          <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Not a member?{' '}
-            <a href="#" className="font-semibold text-gray-700 hover:text-blue-600">
-              Sign up
-            </a>
-          </p>
+            <p className="mt-6 text-center text-sm text-gray-300">
+              Not a member?{' '}
+              <a href="/register" className="font-semibold text-blue-400 hover:text-blue-300">
+                Sign up
+              </a>
+            </p>
+          </div>
         </div>
+
+        {/* Floating AI Assistant Button */}
+        <button
+          onClick={handleAi}
+          className="fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-400 transition-colors duration-200 animate-bounce"
+          aria-label="AI Assistant"
+        >
+          <div className="relative group">
+            <div
+              className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+              aria-describedby="ai-tooltip"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-gray-800"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM8.5 9.5c0-1.5 3-4 3-4s3 2.5 3 4M8.5 14.5c0 1.5 3 4 3 4s3-2.5 3-4M14.5 15l-1.5-3-3 1.5-1.5-3"
+                />
+              </svg>
+            </div>
+
+            <div
+              id="ai-tooltip"
+              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block 
+                         bg-gray-800 text-white text-sm px-3 py-1 rounded-md 
+                         after:content-[''] after:absolute after:top-full after:left-1/2
+                         after:-translate-x-1/2 after:border-8 after:border-x-transparent 
+                         after:border-b-transparent after:border-t-gray-800"
+            >
+              Metamask Login
+              <span className="sr-only">(AI Help)</span>
+            </div>
+          </div>
+        </button>
       </div>
-
- </Layout>     
-
+    </Layout>
   )
 }
 

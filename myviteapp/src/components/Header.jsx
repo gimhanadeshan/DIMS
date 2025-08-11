@@ -37,7 +37,7 @@ const Header = () => {
 
   
   return (
-    <nav className="bg-blue-200 shadow-lg">
+    <nav className="bg-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
 
@@ -57,7 +57,7 @@ const Header = () => {
             {isLoggedIn && (
               <div>
                 <p className="relative p-2 text-gray-800">
-                  <strong className="h-6 w-6">Hi {userName}</strong>
+                  <strong className="h-6 w-6">Hi {name}</strong>
                 </p>
               </div>
             )}
@@ -66,7 +66,7 @@ const Header = () => {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="p-2 hover:text-blue-600 focus:outline-none"
+                className="p-2 hover:text-blue-500 focus:outline-none"
               >
                 <UserIcon className="h-6 w-6" />
               </button>
@@ -78,14 +78,14 @@ const Header = () => {
                     <>
                       <Link
                         to="/dashboard"
-                        className="block px-4 py-2 text-gray-900 hover:bg-blue-100"
+                        className="block px-4 py-2 text-gray-900 hover:bg-blue-300"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Dashboard
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 text-gray-900 hover:bg-blue-100"
+                        className="w-full text-left px-4 py-2 text-gray-900 hover:bg-blue-300"
                       >
                         Logout
                       </button>
@@ -94,14 +94,14 @@ const Header = () => {
                     <>
                       <Link
                         to="/login"
-                        className="block px-4 py-2 text-gray-900 hover:bg-blue-100"
+                        className="block px-4 py-2 text-gray-900 hover:bg-blue-300"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Sign In
                       </Link>
                       <Link
                         to="/register"
-                        className="block px-4 py-2 text-gray-900 hover:bg-blue-100"
+                        className="block px-4 py-2 text-gray-900 hover:bg-blue-300"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         Register
