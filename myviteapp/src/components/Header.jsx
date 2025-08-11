@@ -22,13 +22,22 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Set this dynamically in production
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
-  const name = localStorage.getItem('name') || 'User'; // fallback to 'User' if name not found
+  const [user,setuser] = useState(null);
+
+   useEffect(() => {
+    axios
+      .get("http://localhost:4000/api/user/profile", { withCredentials: true })
+      .then((res) => {
+        setuser(res.data.user);
+      })
+  }, []);
+
 
   useClickOutside(userMenuRef, () => setIsUserMenuOpen(false));
 
   const handleLogout =  () => {
         
-        axios.post("http://localhost:5001/api/authuser/logout", {}, { withCredentials: true });
+        axios.post("http://localhost:4000/api/user/logout", {}, { withCredentials: true });
         setIsLoggedIn(false);
         setIsUserMenuOpen(false);
         navigate("/");
@@ -54,10 +63,10 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             
             {/* Show greeting if logged in */}
-            {isLoggedIn && (
+            {isLoggedIn && user &&(
               <div>
                 <p className="relative p-2 text-gray-800">
-                  <strong className="h-6 w-6">Hi {name}</strong>
+                  <strong className="h-6 w-6">Hi {user.name}</strong>
                 </p>
               </div>
             )}
