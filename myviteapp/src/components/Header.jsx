@@ -66,7 +66,7 @@ const Header = () => {
             {isLoggedIn && user &&(
               <div>
                 <p className="relative p-2 text-gray-800">
-                  <strong className="h-6 w-6">Hi {user.name}</strong>
+                  <strong className="h-6 w-6">Hi, {user.name}</strong>
                 </p>
               </div>
             )}
