@@ -59,6 +59,7 @@ const Login = () => {
                   value={user.email}
                   onChange={handlechange}
                   required
+                  placeholder='example@gmail.com'
                   className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>
@@ -73,6 +74,7 @@ const Login = () => {
                   value={user.password}
                   onChange={handlechange}
                   required
+                  placeholder='*********'
                   className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>
