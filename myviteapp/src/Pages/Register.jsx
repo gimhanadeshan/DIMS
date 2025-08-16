@@ -4,6 +4,7 @@ import Mobitel from '../assets/mobitel.svg'
 import Layout from '../components/Layout';
 import BubblesBackground from '../components/BubblesBackground';
 import { useNavigate } from 'react-router-dom'
+import Web3 from 'web3'; 
 
 const Register = () => {
 
@@ -12,7 +13,9 @@ const [user,setuser] = useState({
     email:"",
     password:""
 });
-const navigate = useNavigate();
+
+ const navigate = useNavigate();
+ const [account, setAccount] = useState("");
 
 const handlechange = (e) => {
     setuser({
@@ -31,9 +34,25 @@ const handlesubmit = async (e) => {
     }
 }
 
-const handleAi = () => {
-    navigate('/metamasklogin') 
-  }
+  // MetaMask connection
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      const web3 = new Web3(window.ethereum);
+      try {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setAccount(accounts[0]);
+        console.log("Connected Account:", accounts[0]);
+        alert(`✅ Wallet Connected: ${accounts[0]}`);
+        navigate('/#');
+      } catch (error) {
+        console.error("User denied account access");
+      }
+    } else {
+      alert("Please install MetaMask");
+    }
+  };
 
   return (
 <Layout>
@@ -109,12 +128,17 @@ const handleAi = () => {
                 Sign in
               </a>
             </p>
+
+{/* <div className="text-white">
+      {account && <p>🦊 Connected as: {account}</p>}
+      </div> */}
+
           </div>
         </div>
 
         {/* Floating AI Assistant Button */}
         <button
-          onClick={handleAi}
+          onClick={connectWallet}
           className="fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-400 transition-colors duration-200 animate-bounce"
           aria-label="AI Assistant"
         >
@@ -123,20 +147,10 @@ const handleAi = () => {
               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
               aria-describedby="ai-tooltip"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-gray-800"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM8.5 9.5c0-1.5 3-4 3-4s3 2.5 3 4M8.5 14.5c0 1.5 3 4 3 4s3-2.5 3-4M14.5 15l-1.5-3-3 1.5-1.5-3"
-                />
-              </svg>
+              <div className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200">
+              <span role="img" aria-label="MetaMask" className="text-xl">🦊</span>
+              </div>
+              
             </div>
 
             <div

@@ -1,39 +1,66 @@
-import React, { useState } from 'react'
-import { loginUser } from '../services/api'
-import Layout from '../components/Layout'
-import Mobitel from '../assets/mobitel.svg'
-import BubblesBackground from '../components/BubblesBackground'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { loginUser } from '../services/api';
+import Layout from '../components/Layout';
+import Mobitel from '../assets/mobitel.svg';
+import BubblesBackground from '../components/BubblesBackground';
+import { useNavigate } from 'react-router-dom';
+import Web3 from 'web3';
+import Toast from "../components/Toast";
+
 
 const Login = () => {
   const [user, setuser] = useState({
     email: '',
     password: '',
-  })
+  });
 
   const navigate = useNavigate();
+  const [account, setAccount] = useState("");
+  const [toast, setToast] = useState(null); // {type, message}
 
+  // Handle input change
   const handlechange = (e) => {
     setuser({
       ...user,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
+  // Handle login form submit
   const handlesubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const res = await loginUser(user)
-      alert('✅ Logged in!', res.data)
-       navigate('/dashboard')
+      const res = await loginUser(user);
+      console.log('✅ Logged in!', res.data);
+      alert('✅ Logged in!');
+      navigate('/dashboard');
     } catch (err) {
-      alert('❌ Error!', err.response?.data || err.message)
+      console.error(err);
+      alert(`❌ Error! ${err.response?.data || err.message}`);
     }
-  }
+  };
 
-  const handleAi = () => {
-    navigate('/metamasklogin') 
-  }
+  // MetaMask connection
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      const web3 = new Web3(window.ethereum);
+      try {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setAccount(accounts[0]);
+        setToast({
+          type: "success",
+          message: `🦊 Wallet Connected: ${accounts[0]}`,
+        });
+      } catch (error) {
+        setToast({ type: "error", message: "User denied account access" });
+      }
+    } else {
+      setToast({ type: "warning", message: "Please install MetaMask" });
+    }
+  };
+
 
   return (
     <Layout>
@@ -59,7 +86,7 @@ const Login = () => {
                   value={user.email}
                   onChange={handlechange}
                   required
-                  placeholder='example@gmail.com'
+                  placeholder="example@gmail.com"
                   className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>
@@ -74,7 +101,7 @@ const Login = () => {
                   value={user.password}
                   onChange={handlechange}
                   required
-                  placeholder='*********'
+                  placeholder="*********"
                   className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-400 sm:text-sm"
                 />
               </div>
@@ -93,34 +120,28 @@ const Login = () => {
                 Sign up
               </a>
             </p>
+
+      {/* <div className="text-white">
+      {account && <p>🦊 Connected as: {account}</p>}
+      </div> */}
+
           </div>
         </div>
 
-        {/* Floating AI Assistant Button */}
+        {/* Floating MetaMask Login Button */}
         <button
-          onClick={handleAi}
+          onClick={connectWallet}
           className="fixed bottom-6 right-6 bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-400 transition-colors duration-200 animate-bounce"
-          aria-label="AI Assistant"
+          aria-label="MetaMask Login"
         >
           <div className="relative group">
             <div
               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
               aria-describedby="ai-tooltip"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-gray-800"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM8.5 9.5c0-1.5 3-4 3-4s3 2.5 3 4M8.5 14.5c0 1.5 3 4 3 4s3-2.5 3-4M14.5 15l-1.5-3-3 1.5-1.5-3"
-                />
-              </svg>
+              <div className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200">
+              <span role="img" aria-label="MetaMask" className="text-xl">🦊</span>
+              </div>
             </div>
 
             <div
@@ -131,14 +152,24 @@ const Login = () => {
                          after:-translate-x-1/2 after:border-8 after:border-x-transparent 
                          after:border-b-transparent after:border-t-gray-800"
             >
-              Metamask Login
+              MetaMask Login
               <span className="sr-only">(AI Help)</span>
             </div>
           </div>
         </button>
       </div>
-    </Layout>
-  )
-}
 
-export default Login
+{/* Toast */}
+        {toast && (
+          <Toast
+            type={toast.type}
+            message={toast.message}
+            onClose={() => setToast(null)}
+          />
+        )}
+
+    </Layout>
+  );
+};
+
+export default Login;
